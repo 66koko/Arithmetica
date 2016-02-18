@@ -1,189 +1,80 @@
 package ikolab.arithemtica;
 
-import 
-
-java.text.DateFormat;
-import 
-
-java.text.SimpleDateFormat;
-import 
-
-java.util.ArrayList;
-import 
-
-java.util.Collections;
-import 
-
-java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import 
-
-android.app.Activity;
-import 
-
-android.content.SharedPreferences;
-import 
-
-android.os.Bundle;
-import 
-
-android.view.View;
-import 
-
-android.view.View.OnClickListener;
-import 
-
-android.widget.Button;
-import 
-
-android.widget.ImageView;
-import 
-
-android.widget.TextView;
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 
-public class 
-
-PlayGame extends Activity implements 
+public class PlayGame extends Activity implements 
 
 OnClickListener {
 
-	//gameplay 
-
-elements
+	//gameplay elements
 	private int level = 0, 
-
-answer = 0, operator = 0, operand1 = 0, 
-
-operand2 = 0;
+        answer = 0, operator = 0, operand1 = 0, 
+	operand2 = 0;
 	//operator constants
-	
-
-private final int ADD_OPERATOR = 0, 
-
-SUBTRACT_OPERATOR = 1, MULTIPLY_OPERATOR 
-
-= 2,
-			DIVIDE_OPERATOR 
-
-= 3;
+	private final int ADD_OPERATOR = 0, 
+	SUBTRACT_OPERATOR = 1, 
+	MULTIPLY_OPERATOR = 2,
+	DIVIDE_OPERATOR = 3;
 	//operator text
-	private String[] 
-
-operators = {"+", "-", "x", "/"};
+	private String[] operators = {"+", "-", "x", "/"};
 	
 
-//min and max for each level and 
-
-operator
-	private int[][] levelMin 
-
-= {
+//min and max for each level and operator 	
+private int[][] levelMin = {
 			{1, 11, 21},
-		
-
-	{1, 5, 10},
-			
-
-{2, 5, 10},
-			{2, 3, 
-
-5}};
-	private int[][] levelMax = {
-		
-
-	{10, 25, 50},
-			
-
-{10, 20, 30},
-			{5, 10, 
-
-15},
+		        {1, 5, 10},
+			{2, 5, 10},
+			{2, 3, 5}};
+private int[][] levelMax = {
+			{10, 25, 50},
+			{10, 20, 30},
+			{5, 10, 15},
 			{10, 50, 100}};
-	
-
 //random number generator
-	private 
-
-Random random;
+private Random random;
 	//ui elements
-	private 
-
-TextView question, answerTxt, scoreTxt;
-	
-
+private TextView question, answerTxt, scoreTxt;
 private ImageView response;
-	private 
+private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, enterBtn, clearBtn;
 
-Button btn1, btn2, btn3, btn4, btn5, 
+	//shared preferences
+private SharedPreferences gamePrefs;
+public static final String GAME_PREFS = "ArithmeticFile";
 
-btn6, btn7, btn8, btn9, btn0, 
+@Override
 	
+protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_playgame);
 
-enterBtn, clearBtn;
-
-	//shared 
-
-preferences
-	private 
-
-SharedPreferences gamePrefs;
-	public 
-
-static final String GAME_PREFS = 
-
-"ArithmeticFile";
-
-	@Override
-	
-
-protected void onCreate(Bundle 
-
-savedInstanceState) {
+		//initiate shared prefs
 		
+gamePrefs = getSharedPreferences (GAME_PREFS, 0);
 
-super.onCreate(savedInstanceState);
-		
+	      //text and image views
+question = (TextView)findViewById(R.id.question);
+answerTxt = (TextView)findViewById(R.id.answer);
+response = (ImageView)findViewById(R.id.response);
+scoreTxt = (TextView)findViewById (R.id.score);
 
-setContentView
-
-(R.layout.activity_playgame);
-
-		
-
-//initiate shared prefs
-		
-
-gamePrefs = getSharedPreferences
-
-(GAME_PREFS, 0);
-
-		//text 
-
-and image views
-		question = 
-
-(TextView)findViewById(R.id.question);
-		
-
-answerTxt = (TextView)findViewById
-
-(R.id.answer);
-		response = 
-
-(ImageView)findViewById(R.id.response);
-		
-
-scoreTxt = (TextView)findViewById
-
-(R.id.score);
-
-		//hide tick 
-
-cross initially
+		//hide tick cross initially
 		
 
 response.setVisibility(View.INVISIBLE);
